@@ -1,0 +1,19 @@
+{
+	"colors" :
+	[
+		{
+			"name" : "global-color-1",
+			"type" : "spot",
+			"red" : 255,
+			"green" : 0,
+			"blue" : 255
+		},
+		{
+			"name" : "global-color-2",
+			"type" : "spot",
+			"red" : 0,
+			"green" : 0,
+			"blue" : 255
+		}
+	]
+}

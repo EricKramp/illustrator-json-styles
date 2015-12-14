@@ -1,7 +1,9 @@
 var docRef = app.activeDocument;
-var swatchesFile = File (docRef.path + "/sample-color.json");
 
-function ReplaceFromJSON () {
+function LoadSwatchesFromJSON () {
+	
+	var swatchesFile = File.openDialog ("Please select the JSON file containing your swatches");
+
 	if (swatchesFile.exists) {
 		swatchesFile.open("r");
 		var col = swatchesFile.read();
@@ -27,3 +29,5 @@ function ReplaceFromJSON () {
 		alert("Couldn't find swatches json file");
 	}
 }
+
+LoadSwatchesFromJSON();

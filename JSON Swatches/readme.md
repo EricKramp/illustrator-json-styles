@@ -10,9 +10,10 @@ The initial release (v0.1) only has the functionality of syncing "Spot" colors i
 
 At the moment creating a new JSON is not supported, so you'll need to provide an empty text file for starters. You can copy & rename the file "sample-color.json" included in this repository as a good starting point.
 
-## Caveats & Warnings
+## Caveats, Warnings & Directions
 
 - "Saving" will ENTIRELY overwrite the contents of the JSON file you select, it doesn't do any merging, so if there are colors you want to keep but are not present in the document you save from they will be lost. 
+- "Saving" can't actually create new files yet, so you need to point it at a existing plain text document, any extension should be fine but filename.json is the preferred format.
 - "Loading" does not override the existing swatch library in your open document, it will only update the swatches that have matching names to the JSON file. For this reason the names must match exactly for the updating process to work.
 
 ## Included

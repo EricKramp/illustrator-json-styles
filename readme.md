@@ -1,6 +1,8 @@
 # Illustrator JSON Styles
+
 v 0.1
-Eric Kramp
+
+by Eric Kramp
 
 ## Overview
 

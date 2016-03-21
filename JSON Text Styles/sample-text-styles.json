@@ -1,0 +1,13 @@
+{
+	"styles" : [
+		{
+			"name" : "h1",
+
+			"textFont" : "Myriad Pro",
+			"font-weight" : "Regular",	// from TextFont.style
+			"font-size" : "18pt",
+			"capitalization" : "All-Caps",
+			"leading" : "auto"		// or a number in points
+		}
+	]
+}

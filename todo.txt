@@ -1,8 +1,8 @@
 todo
 
+- better error detection if current layer is locked/hidden
 - create swatches relative to current artboard
 - detect color tonal value and change swatch text label between black & white for best contrast
-- better error detection if current layer is locked/hidden
 - don't generate swatches that are in the "trash" (show up as "deleted swatch")
 	- figure out how to reproduce this
 - write documentation for swatch generator

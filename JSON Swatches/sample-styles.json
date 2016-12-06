@@ -1,0 +1,17 @@
+{
+	"styles" : [
+		{
+			"name" : "accent-button",
+
+			"fill-color" : "white",
+			"stroke-color" : "accent-3",
+			"stroke-weight" : 2,
+
+			"textFont" : "Myriad Pro",
+			"font-weight" : "Regular",	// from TextFont.style
+			"font-size" : "18pt",
+			"capitalization" : "All-Caps",
+			"leading" : "auto"		// or a number in points
+		}
+	]
+}

@@ -9,11 +9,11 @@ function LoadSwatchesFromJSON () {
 		var col = swatchesFile.read();
 	    var data = eval("(" + col + ")");
 
-			// loop through all the colors in the json file 
+		// loop through all the colors in the json file 
 		for (var h = data.colors.length - 1; h >= 0; h--) {
 			var foundMatch = false;
 			
-	    // loop through all the spot "global" swatches in the document
+		    // loop through all the spot "global" swatches in the document
 			for (var i = 0; i < docRef.spots.length; i++) {
 			    var currSwatch = docRef.spots[i];
 
@@ -23,7 +23,11 @@ function LoadSwatchesFromJSON () {
 			    }
 			}
 		    
-		    // if (!foundMatch)
+		    if (!foundMatch) {
+		    	var newSpot = app.activeDocument.spots.add();
+		    	newSpot.name = data.colors[h].name;
+		    	newSpot.color = CreateColor(data.colors[h]);
+		    }
 		}
 	} else {
 		alert("Couldn't find swatches json file");

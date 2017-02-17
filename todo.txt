@@ -1,0 +1,13 @@
+todo
+
+- better error detection if current layer is locked/hidden
+- create swatches relative to current artboard
+- detect color tonal value and change swatch text label between black & white for best contrast
+- don't generate swatches that are in the "trash" (show up as "deleted swatch")
+	- figure out how to reproduce this
+- write documentation for swatch generator
+
+ideas
+
+- create/detect layer for swatches
+- add option to generate text next to swatch, with smaller swatch

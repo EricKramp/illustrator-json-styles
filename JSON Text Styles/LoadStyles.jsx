@@ -3,74 +3,98 @@
 
 //----------- END JSON Object -----------------
 
-var docRef = app.activeDocument;
+/*
+	Array.prototype.[method name] allows you to define/overwrite an objects method
+	needle is the item you are searching for
+	this is a special variable that refers to "this" instance of an Array.
+	returns true if needle is in the array, and false otherwise
 
-function LoadFromJSON () {
-	
-	var swatchesFile = File.openDialog ("Please select the JSON file containing your text styles");
+	https://css-tricks.com/snippets/javascript/javascript-array-contains/
+ */
+Array.prototype.contains = function(needle) {
+	for (i in this) {
+		if (this[i] == needle) return true;
+	}
+	return false;
+}
+
+var docRef = app.activeDocument,
+	skippedProperties = "";
+
+function LoadFromJSON() {
+
+	var swatchesFile = File.openDialog("Please select the JSON file containing your text styles");
 
 	if (swatchesFile.exists) {
 		swatchesFile.open("r");
 		var col = swatchesFile.read();
-	    var data = eval("(" + col + ")");
-	    // alert (data);
+		var data = eval("(" + col + ")");
+		var saveableProperties = [
+			"name", // string
+			"textFont", // TextFont
+			"size", // float
+			"autoLeading", //bool
+			"leading", // float
+			"kerningMethod", // AutoKernType.AUTO
+			"capitalization", // FontCapsOption.NORMALCAPS
+			"baselinePosition", //	FontBaselineOption.NORMALBASELINE
+			"fillColor", // [NoColor]
+			"strokeColor" // [NoColor]
+		];
 
-	    // loop through all the spot "global" swatches in the document
+		// loop through all the spot "global" swatches in the document
 		for (var i = 0; i < docRef.characterStyles.length; i++) {
-		    var currStyle = docRef.characterStyles[i];
-		    // alert(currStyle.characterAttributes);
-			
+			var currStyle = docRef.characterStyles[i];
+
 			// loop through all the styles in the json file to see if there are matches
 			for (var h = data.styles.length - 1; h >= 0; h--) {
-			    if (currStyle.name == data.styles[h].name) {
-			    	// alert ("found matching style");
-			    	var jsonStyle = data.styles[h],
-			    		attr = currStyle.characterAttributes;
+				if (currStyle.name == data.styles[h].name) {
+					var jsonStyle = data.styles[h];
 
-			    	// list of character attributes, not sure how to unset them if there is no value specified in the JSON yet
-			    	if (jsonStyle.akiLeft) attr.akiLeft = jsonStyle.akiLeft;
-			    	if (jsonStyle.akiRight) attr.akiRight = jsonStyle.akiRight;
-			    	if (jsonStyle.alignment) attr.alignment = jsonStyle.alignment;
-			    	if (jsonStyle.alternateGlyphs) attr.alternateGlyphs = jsonStyle.alternateGlyphs;
-			    	if (jsonStyle.autoLeading) attr.autoLeading = jsonStyle.autoLeading;
-			    	if (jsonStyle.baselineDirection) attr.baselineDirection = jsonStyle.baselineDirection;
-			    	if (jsonStyle.baselinePosition) attr.baselinePosition = jsonStyle.baselinePosition;
-			    	if (jsonStyle.baselineShift) attr.baselineShift = jsonStyle.baselineShift;
-			    	if (jsonStyle.capitalization) attr.capitalization = jsonStyle.capitalization;
-			    	if (jsonStyle.connectionForms) attr.connectionForms = jsonStyle.connectionForms;
-			    	if (jsonStyle.contextualLigature) attr.contextualLigature = jsonStyle.contextualLigature;
-			    	if (jsonStyle.discretionaryLigature) attr.discretionaryLigature = jsonStyle.discretionaryLigature;
-			    	if (jsonStyle.figureStyle) attr.figureStyle = jsonStyle.figureStyle;
-			    	if (jsonStyle.fillColor) attr.fillColor = jsonStyle.fillColor;
-			    	if (jsonStyle.fractions) attr.fractions = jsonStyle.fractions;
-			    	if (jsonStyle.horizontalScale) attr.horizontalScale = jsonStyle.horizontalScale;
-			    	if (jsonStyle.italics) attr.italics = jsonStyle.italics;
-			    	if (jsonStyle.kerningMethod) attr.kerningMethod = jsonStyle.kerningMethod;
-			    	if (jsonStyle.language) attr.language = jsonStyle.language;
-			    	if (jsonStyle.leading) attr.leading = jsonStyle.leading;
-			    	if (jsonStyle.ligature) attr.ligature = jsonStyle.ligature;
-			    	if (jsonStyle.noBreak) attr.noBreak = jsonStyle.noBreak;
-			    	if (jsonStyle.openTypePosition) attr.openTypePosition = jsonStyle.openTypePosition;
-			    	if (jsonStyle.ordinals) attr.ordinals = jsonStyle.ordinals;
-			    	if (jsonStyle.ornaments) attr.ornaments = jsonStyle.ornaments;
-			    	if (jsonStyle.overprintFill) attr.overprintFill = jsonStyle.overprintFill;
-			    	if (jsonStyle.overprintStroke) attr.overprintStroke = jsonStyle.overprintStroke;
-			    	if (jsonStyle.parent) attr.parent = jsonStyle.parent;
-			    	if (jsonStyle.proportionalMetrics) attr.proportionalMetrics = jsonStyle.proportionalMetrics;
-			    	if (jsonStyle.rotation) attr.rotation = jsonStyle.rotation;
-			    	if (jsonStyle.size) attr.size = jsonStyle.size;
-			    	if (jsonStyle.strikeThrough) attr.strikeThrough = jsonStyle.strikeThrough;
-			    	if (jsonStyle.strokeColor) attr.strokeColor = jsonStyle.strokeColor;
-			    	if (jsonStyle.strokeWeight) attr.strokeWeight = jsonStyle.strokeWeight;
-			    	if (jsonStyle.stylisticAlternates) attr.stylisticAlternates = jsonStyle.stylisticAlternates;
-			    	if (jsonStyle.swash) attr.swash = jsonStyle.swash;
-			    	if (jsonStyle.tateChuYokoHorizontal) attr.tateChuYokoHorizontal = jsonStyle.tateChuYokoHorizontal;
+					if (currStyle.name != "[Normal Character Style]") {
+						for (var property in currStyle) {
+							if (jsonStyle.hasOwnProperty(property)) {
+								if (saveableProperties.contains(property)) {
+									try {
+										// alert(currStyle.name + "." + property + ": " + currStyle[property]);
+										var newValue = parseProperty(property, jsonStyle[property]);
+										if (newValue) {
+											currStyle[property] = newValue;
+										}
+									} catch (error) {
+										alert(currStyle.name + "." + property + " error: " + error);
+									}
+								}
+							}
+						}
 
-			    }
+					}
+				}
 			}
 		}
+
+		alert("These properties were skipped because we don't know how to handle them yet: " + skippedProperties);
 	} else {
 		alert("Couldn't find swatches json file");
+	}
+}
+
+function parseProperty(property, value) {
+	switch (property) {
+		case "name":
+			return value;
+		case "size":
+		case "leading":
+			return parseFloat(value);
+		case "autoLeading":
+			return (value === "true");
+		case "textFont":
+			return null;
+
+		default:
+			skippedProperties += ", " + property.toString();
+			// alert("unknown property: " + property + " : " + value);
+			return null;
 	}
 }
 

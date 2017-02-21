@@ -75,7 +75,7 @@ function LoadFromJSON() {
 
 		alert("These properties were skipped because we don't know how to handle them yet: " + skippedProperties);
 	} else {
-		alert("Couldn't find swatches json file");
+		alert("Couldn't find Character Styles json file");
 	}
 }
 
@@ -89,11 +89,10 @@ function parseProperty(property, value) {
 		case "autoLeading":
 			return (value === "true");
 		case "textFont":
-			return null;
+			return textFonts.getByName(value);
 
 		default:
-			skippedProperties += ", " + property.toString();
-			// alert("unknown property: " + property + " : " + value);
+			skippedProperties += "\n " + property.toString();
 			return null;
 	}
 }

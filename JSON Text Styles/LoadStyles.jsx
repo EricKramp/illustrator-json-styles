@@ -140,21 +140,22 @@ function LoadFromJSON() {
 
 					// if (docStyle.name != "[Normal Character Style]") {
 						foundMatch = true;
-						for (var property in docStyle) {
-							if (jsonStyle.hasOwnProperty(property)) {
-								if (saveableProperties.contains(property)) {
-									try {
-										// alert(docStyle.name + "." + property + ": " + docStyle[property]);
-										var newValue = parseProperty(property, jsonStyle[property]);
-										if (newValue) {
-											docStyle[property] = newValue;
-										}
-									} catch (error) {
-										alert(docStyle.name + "." + property + " error: " + error);
-									}
-								}
-							}
-						}
+						SetStyles(jsonStyle, docStyle);
+						// for (var property in docStyle) {
+						// 	if (jsonStyle.hasOwnProperty(property)) {
+						// 		if (saveableProperties.contains(property)) {
+						// 			try {
+						// 				// alert(docStyle.name + "." + property + ": " + docStyle[property]);
+						// 				var newValue = parseProperty(property, jsonStyle[property]);
+						// 				if (newValue) {
+						// 					docStyle[property] = newValue;
+						// 				}
+						// 			} catch (error) {
+						// 				alert(docStyle.name + "." + property + " error: " + error);
+						// 			}
+						// 		}
+						// 	}
+						// }
 					// }
 				}
 			}
@@ -171,7 +172,27 @@ function LoadFromJSON() {
 }
 
 function CreateCharacterStyle(jsonStyle) {
-	alert("CreateCharacterStyle: " + jsonStyle.toString());
+	// alert("CreateCharacterStyle: " + jsonStyle.toString());
+	var charStyle = docRef.characterStyles.add(jsonStyle.name);
+	SetStyles(jsonStyle, charStyle);
+}
+
+function SetStyles(jsonStyle, docStyle) {
+	for (var property in docStyle) {
+		if (jsonStyle.hasOwnProperty(property)) {
+			// if (saveableProperties.contains(property)) {
+				try {
+					// alert(docStyle.name + "." + property + ": " + docStyle[property]);
+					var newValue = parseProperty(property, jsonStyle[property]);
+					if (newValue) {
+						docStyle[property] = newValue;
+					}
+				} catch (error) {
+					alert(docStyle.name + "." + property + " error: " + error);
+				}
+			// }
+		}
+	}
 }
 
 function parseProperty(property, value) {

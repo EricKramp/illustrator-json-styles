@@ -6,7 +6,7 @@ by Eric Kramp
 
 ## Overview
 
-The goal of these scripts are to provide versionable, user controlled syncing of colors & styles between Illustrator files as an alternative to the blackbox syncing provided by Cloud Libraries. 
+The goal of these scripts are to provide versionable, user controlled syncing of colors & styles between Illustrator files. 
 
 The initial release only has the functionality of syncing "Spot" colors in RGB format. There are 2 scripts: Load Swatches & Save Swatches, and they do what you'd expect. You can keep these scripts wherever you prefer, I recommend associating the ".jsx" file extension with Adobe Illustrator that way simply double-clicking the script file will launch loading/saving with the currently open file.
 
